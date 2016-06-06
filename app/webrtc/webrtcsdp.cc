@@ -165,6 +165,7 @@ static const char kAttributeSctpPort[] = "sctp-port";
 // Experimental flags
 static const char kAttributeXGoogleFlag[] = "x-google-flag";
 static const char kValueConference[] = "conference";
+static const char kAttributeXCaesarFlag[] = "x-caesar";
 
 // Candidate
 static const char kCandidateHost[] = "host";
@@ -2563,6 +2564,16 @@ bool ParseContent(const std::string& message,
       if (!AddSctpDataCodec(static_cast<DataContentDescription*>(media_desc),
                             sctp_port)) {
         return false;
+      }
+    } else if (HasAttribute(line, kAttributeXCaesarFlag)) {
+      // uProxy-specific hack to allow shapeshifting
+      std::string caesar_value;
+      if (!GetValue(line, kAttributeXCaesarFlag, &caesar_value, error)) {
+        return false;
+      }
+      int shift = 0;
+      if (GetValueFromString(line, caesar_value, &shift, error)) {
+        transport->caesar_shift = shift;
       }
     } else if (IsRtp(protocol)) {
       //

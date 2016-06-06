@@ -573,6 +573,8 @@ static bool UpdateTransportInfoForBundle(const ContentGroup& bundle_group,
       selected_transport_info->description.ice_pwd;
   ConnectionRole selected_connection_role =
       selected_transport_info->description.connection_role;
+  int selected_caesar_shift =
+      selected_transport_info->description.caesar_shift;
   for (TransportInfos::iterator it =
            sdesc->transport_infos().begin();
        it != sdesc->transport_infos().end(); ++it) {
@@ -581,6 +583,7 @@ static bool UpdateTransportInfoForBundle(const ContentGroup& bundle_group,
       it->description.ice_ufrag = selected_ufrag;
       it->description.ice_pwd = selected_pwd;
       it->description.connection_role = selected_connection_role;
+      it->description.caesar_shift = selected_caesar_shift;
     }
   }
   return true;
